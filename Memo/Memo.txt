@@ -1,0 +1,9 @@
+# In this case, "smaller objects" represents the sample.
+# How ever the mean and median of the volume(m_b) are close,
+median(df_galaxy$`  m_b  `, na.rm = TRUE)
+mean(df_galaxy$`  m_b  `, na.rm = TRUE)
+# then the galaxy with smaller size and light volume 
+# might not be represented in this sample.
+# What do you think?
+
+

@@ -1,5 +1,7 @@
 #BAN400 Assignment Git
 
+#Problem 1 -4
+
 ##############################################################################
 #Problem1 
 # I did it by clone, update the local file, add and commit, and push
@@ -63,19 +65,34 @@ df_galaxy %>%
              color="red", linetype="dashed", size=1)+
   geom_vline(aes(xintercept=median(` a_26  `, na.rm=TRUE)),
              color="blue", linetype="dashed", size=1)
-  
 
-# In this case, "smaller objects" represents the sample.
-# How ever the mean and median of the volume(m_b) are close,
-median(df_galaxy$`  m_b  `, na.rm = TRUE)
-mean(df_galaxy$`  m_b  `, na.rm = TRUE)
-# then the galaxy with smaller size and light volume 
-# might not be represented in this sample.
-# What do you think?
+  
+#limit the data to the 1st 25% of "a_26"
+q1_a_26 <- 
+  df_galaxy %>% 
+  filter (` a_26  ` <= quantile(df_galaxy$` a_26  `, na.rm=TRUE)[1:2])
+  
+q1_a_26 %>% 
+  ggplot(aes(x= ` a_26  `))+
+  geom_histogram(aes(y= ..density..),
+                 binwidth=0.5,
+                 colour="black", fill="white")+
+  geom_density(alpha=0.05, fill="pink")+
+  geom_vline(aes(xintercept=mean(` a_26  `, na.rm=TRUE)),
+             color="red", linetype="dashed", size=1)+
+  geom_vline(aes(xintercept=median(` a_26  `, na.rm=TRUE)),
+             color="blue", linetype="dashed", size=1)
+
+# from this plot, despite there are lot of galaxies 
+# whose diameters are between 0.5 to 5, whilst the numbers of 
+# galaxy whose sizes are smaller than 0.5 are very limited.
+# It seems the Hubble cannot observe these size of galaxies.
+# therefore, this research could be said that the data has limitation 
+# in representatives regarding very small size of galaxies. 
 
 
 ##############################################################################
-#Problem3 
+#Problem4
 
 # Read the txt file
 raw_text2 <- readLines(con = "C:/Users/littl/ban400/git-Tomoko-Yamagata/UCNG_Table4.txt")
@@ -98,7 +115,25 @@ colnames(df_galaxy2)<-
 
 # Join this information with the table from Problem 2 
 
-left_join(x= df_galaxy2, y = df_galaxy)
 
-# and plot the velocity of each galaxy (cz) against their distance from us (D). 
+df_galaxy3 <- left_join(x= df_galaxy2, y = df_galaxy)
+
+# Plot the velocity of each galaxy (cz) against their distance from us (D). 
+
+df_galaxy3 %>% 
+  ggplot(aes(x=`   D   `, y=`  cz  `))+
+  geom_point()+
+  geom_smooth(method=lm , color="red", fill="#69b3a2", se=TRUE)
+
+
+# the expansion of space is given by v = HD, 
+# where v is the velocity, D is the distance, 
+# and H is Hubble's constant.
+
+# I replaced D and cz (x-axis=D, y axis= cz)
+# In this note, the expansion can be said v= HD
+# except some very large velocity galaxies.
+# Also, the the galaxies where the distance between 
+# 0.2 to 1.0 seem also not following the trend... 
+
 
